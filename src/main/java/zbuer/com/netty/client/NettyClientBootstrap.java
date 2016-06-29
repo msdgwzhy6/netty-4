@@ -12,7 +12,11 @@ import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
+import sun.jvmstat.perfdata.monitor.PerfStringVariableMonitor;
 import zbuer.com.netty.client.handler.NettyClientHandler;
+import zbuer.com.netty.message.LoginMsg;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author buer
@@ -57,4 +61,16 @@ public class NettyClientBootstrap {
 			e.printStackTrace();
 		}
 	}
+
+	public static void main(String[] args) throws Exception{
+		NettyClientBootstrap clientBootstrap = new NettyClientBootstrap(9999,"127.0.0.1");
+		LoginMsg loginMsg = new LoginMsg();
+		loginMsg.setUserName("buer");
+		loginMsg.setPassword("buer");
+		clientBootstrap.socketChannel.writeAndFlush(loginMsg);
+		while (true){
+			TimeUnit.SECONDS.sleep(15);
+		}
+	}
+
 }

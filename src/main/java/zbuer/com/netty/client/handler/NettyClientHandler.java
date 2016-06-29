@@ -1,6 +1,5 @@
 package zbuer.com.netty.client.handler;
 
-import com.sun.javafx.geom.AreaOp;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleStateEvent;

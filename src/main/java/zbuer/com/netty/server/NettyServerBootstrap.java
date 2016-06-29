@@ -11,6 +11,8 @@ import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import zbuer.com.netty.server.handler.NettyServerHandler;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author buer
  * @since 16/6/28
@@ -57,8 +59,12 @@ public class NettyServerBootstrap {
 			System.out.println("server start ------------->†");
 		}
 
+	}
 
-
-
+	public static void main(String[] args) throws Exception{
+		NettyServerBootstrap bootstrap = new NettyServerBootstrap(9999);
+		while (true){
+			TimeUnit.SECONDS.sleep(15);
+		}
 	}
 }
