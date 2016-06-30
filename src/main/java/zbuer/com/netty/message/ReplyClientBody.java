@@ -6,6 +6,8 @@ package zbuer.com.netty.message;
  */
 public class ReplyClientBody extends  ReplyBody {
 
+
+
 	private String clientInfo;
 
 	public String getClientInfo() {

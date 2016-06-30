@@ -29,6 +29,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<BaseMsg> {
 		if (MsgType.LOGIN.equals(baseMsg.getType())) {
 			LoginMsg loginMsg = (LoginMsg) baseMsg;
 			if ("buer".equals(loginMsg.getUserName()) && "buer".equals(loginMsg.getPassword())) {
+				System.out.println("clent : " + loginMsg.getUserName() +  "登录成功");
 				String loginToken = NettyChannelMap.add((SocketChannel) channelHandlerContext.channel());
 				LoginReplyMsg loginReplyMsg = new LoginReplyMsg();
 				loginReplyMsg.setSuccess(true);

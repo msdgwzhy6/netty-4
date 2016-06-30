@@ -7,12 +7,13 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
-import sun.jvmstat.perfdata.monitor.PerfStringVariableMonitor;
 import zbuer.com.netty.client.handler.NettyClientHandler;
 import zbuer.com.netty.message.LoginMsg;
 
@@ -39,13 +40,14 @@ public class NettyClientBootstrap {
 	private void start() {
 		EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
 		Bootstrap bootstrap = new Bootstrap();
-		bootstrap.channel(SocketChannel.class);
+		bootstrap.channel(NioSocketChannel.class);
 		bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
 		bootstrap.group(eventLoopGroup);
 		bootstrap.remoteAddress(host, port);
 		bootstrap.handler(new ChannelInitializer<SocketChannel>() {
 			@Override
 			protected void initChannel(SocketChannel ch) throws Exception {
+				ch.pipeline().addLast(new IdleStateHandler(20,10,0));
 				ch.pipeline().addLast(new ObjectEncoder());
 				ch.pipeline().addLast(new ObjectDecoder(ClassResolvers.cacheDisabled(null)));
 				ch.pipeline().addLast(new NettyClientHandler());
@@ -55,7 +57,8 @@ public class NettyClientBootstrap {
 		try {
 			ChannelFuture future = bootstrap.connect(host,port).sync();
 			if(future.isSuccess()){
-				System.out.println("connect server success .....");
+				socketChannel = (SocketChannel)future.channel();
+;				System.out.println("connect server success .....");
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();

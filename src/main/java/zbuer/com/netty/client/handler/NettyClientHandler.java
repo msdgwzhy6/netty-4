@@ -23,11 +23,12 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			loginMsg.setUserName("buer");
 			loginMsg.setPassword("buer");
 			ctx.writeAndFlush(loginMsg);
-			break;
 		}
+		break;
 		case PING:{
 			System.out.println("receive ping from server------->" + new Date());
 		}
+		break;
 		case ASK:{
 			ReplyClientBody clientBody = new ReplyClientBody("reply client body");
 			ReplyMsg replyMsg = new ReplyMsg();
@@ -35,16 +36,18 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<BaseMsg> {
 			ctx.writeAndFlush(replyMsg);
 
 		}
+		break;
 		case REPLY:{
 			ReplyMsg replyMsg = (ReplyMsg)msg;
 			ReplyServerBody replyServerBody = (ReplyServerBody)replyMsg.getReplyBody();
 			System.out.println("receive client msg : " + replyServerBody);
-			break;
 		}
+		break;
 		case LOGIN_REPLY:{
 			LoginReplyMsg loginReplyMsg = (LoginReplyMsg)msg;
 			Constants.setClientId(loginReplyMsg.getLoginToken());
 		}
+		break;
 		default:
 			break;
 		}
